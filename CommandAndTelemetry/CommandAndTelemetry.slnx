@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CommandProcessor/CommandProcessor.csproj" />
+  <Project Path="TelemetryGenerator/TelemetryGenerator.csproj" />
+</Solution>
