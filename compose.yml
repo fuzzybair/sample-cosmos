@@ -1,0 +1,35 @@
+include:
+  - ./cosmos-project/compose.yaml
+services:
+  database: 
+    image: postgres:15.3-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: cosmosCommanding
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  command-processor:
+    build: 
+      context: ./CommandAndTelemetry
+      dockerfile: ./CommandProcessor/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+  telemetry-generator:
+    build: 
+      context: ./CommandAndTelemetry
+      dockerfile: ./TelemetryGenerator/Dockerfile
+    environment:
+      ASPNETCORE_HTTPS_PORTS: 8444
+      ASPNETCORE_HTTP_PORTS: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      - database
+volumes:
+  db_data:
+    driver: local
