@@ -1,0 +1,17 @@
+{
+  "name": "openc3-cosmos-fakesat (gem-build)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["rebornix.ruby", "castwide.solargraph"]
+    }
+  },
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "workspaceFolder": "/workspace/openc3-cosmos-fakesat",
+  "postCreateCommand": "gem --version && bundle --version || gem install bundler",
+  "remoteUser": "vscode"
+}
