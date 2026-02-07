@@ -4,6 +4,7 @@
 - First general instruction
 - Second general instruction
 - Always verify NuGet package versions before recommending exact version numbers; Npgsql.EntityFrameworkCore.PostgreSQL may not have matching 10.0.2—do not assume package versions.
+- When using the generic Host in console apps, add Microsoft.Extensions.Hosting and Microsoft.Extensions.DependencyInjection NuGet packages if types under Microsoft.Extensions.* are unresolved.
 
 ## Code Style
 - Use specific formatting rules

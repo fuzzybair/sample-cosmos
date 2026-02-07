@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Collections.Generic;
 
 namespace CommandProcessor
 {
@@ -14,8 +16,46 @@ namespace CommandProcessor
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Command command)
+    public IActionResult Post([FromBody] JsonElement payload)
     {
+      string packetName = null;
+      if (payload.ValueKind == JsonValueKind.Object)
+      {
+        if (payload.TryGetProperty("PacketName", out var p) || payload.TryGetProperty("packetName", out p) || payload.TryGetProperty("packet_name", out p))
+        {
+          try { packetName = p.GetString(); } catch { packetName = p.ToString(); }
+        }
+      }
+
+      var parameters = new Dictionary<string, string>();
+
+      JsonElement fieldsEl;
+      if (payload.ValueKind == JsonValueKind.Object && (payload.TryGetProperty("Fields", out fieldsEl) || payload.TryGetProperty("fields", out fieldsEl)))
+      {
+        if (fieldsEl.ValueKind == JsonValueKind.Object)
+        {
+          foreach (var prop in fieldsEl.EnumerateObject())
+          {
+            parameters[prop.Name] = prop.Value.ToString();
+          }
+        }
+      }
+      else if (payload.ValueKind == JsonValueKind.Object)
+      {
+        foreach (var prop in payload.EnumerateObject())
+        {
+          var name = prop.Name;
+          if (name == "PacketName" || name == "packetName" || name == "packet_name") continue;
+          parameters[name] = prop.Value.ToString();
+        }
+      }
+
+      var command = new Command
+      {
+        PacketName = packetName ?? string.Empty,
+        Parameters = parameters
+      };
+
       _db.Commands.Add(command);
       _db.SaveChanges();
 

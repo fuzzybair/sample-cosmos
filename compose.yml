@@ -24,8 +24,8 @@ services:
       context: ./CommandAndTelemetry
       dockerfile: ./TelemetryGenerator/Dockerfile
     environment:
-      ASPNETCORE_HTTPS_PORTS: 8444
-      ASPNETCORE_HTTP_PORTS: 8081
+      TELEMETRY_HOST: openc3-operator
+      TELEMETRY_PORT: 2900
     ports:
       - "8081:8081"
     depends_on:

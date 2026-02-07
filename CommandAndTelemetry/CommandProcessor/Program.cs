@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommandProcessor
@@ -28,6 +29,12 @@ namespace CommandProcessor
 
       app.MapControllers();
       app.MapGet("/", () => "Hello World!");
+
+      app.MapPost("/", (string json, [FromServices] ILogger<Program> logger) 
+        =>
+      {
+        logger.LogInformation("Received post at root with {@Body}", json);
+      });
 
       // Automatic DB creation strategy:
       // 1) Try Apply Migrations (recommended)

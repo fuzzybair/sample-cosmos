@@ -1,11 +1,13 @@
-﻿namespace TelemetryGenerator
+﻿using System;
+
+namespace TelemetryGenerator
 {
   public class TelemetryData
   {
-    public long Id { get; set; }
-    public string PacketName { get; set; } = string.Empty;
-    public string Target { get; set; } = string.Empty;
-    public DateTimeOffset TimeReceived { get; set; }
-    public Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
+    public DateTime Timestamp { get; set; }
+    public Guid DeviceId { get; set; }
+    public double TemperatureC { get; set; }
+    public double HumidityPercent { get; set; }
+    public string Status { get; set; } = string.Empty;
   }
 }
