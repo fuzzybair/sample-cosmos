@@ -30,10 +30,14 @@ namespace CommandProcessor
       app.MapControllers();
       app.MapGet("/", () => "Hello World!");
 
-      app.MapPost("/", (string json, [FromServices] ILogger<Program> logger) 
-        =>
+      app.MapPost("/", async (HttpRequest request, [FromServices] ILogger<Program> logger) =>
       {
-        logger.LogInformation("Received post at root with {@Body}", json);
+        using var reader = new StreamReader(request.Body);
+        var rawJson = await reader.ReadToEndAsync();
+
+        logger.LogInformation("Success! Received: {Body}", rawJson);
+
+        return Results.Ok();
       });
 
       // Automatic DB creation strategy:

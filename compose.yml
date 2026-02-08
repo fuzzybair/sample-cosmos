@@ -1,5 +1,5 @@
-include:
-  - ./cosmos-project/compose.yaml
+# include:
+#   - ./cosmos-project/compose.yaml
 services:
   database: 
     image: postgres:15.3-alpine

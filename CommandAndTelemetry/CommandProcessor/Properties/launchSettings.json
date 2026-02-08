@@ -3,7 +3,7 @@
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "launchBrowser": false,
-      "containerRunArguments": "--name command-processor --network cosmos_default -p 8080:8080",
+      "containerRunArguments": "--name command-processor --network cosmos-project_default -p 8080:8080",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8443",
         "ASPNETCORE_HTTP_PORTS": "8080"

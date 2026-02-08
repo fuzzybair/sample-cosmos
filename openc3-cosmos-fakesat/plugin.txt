@@ -1,20 +1,12 @@
-# Set VARIABLEs here to allow variation in your plugin
-# See https://docs.openc3.com/docs/configuration/plugins for more information
-VARIABLE fakesat_target_name FAKESAT
-VARIABLE fakesat_int_name FAKESAT_INT
-VARIABLE fakesat_command_host command-processor
-VARIABLE fakesat_command_port 8080
-VARIABLE fakesat_command_protocol http
-VARIABLE fakesat_command_path /api/commands
-VARIABLE fakesat_write_timeout 5
-VARIABLE fakesat_read_timeout 5
-VARIABLE fakesat_connect_timeout 5
-VARIABLE fakesat_include_request_in_response false
+VARIABLE command_host command-processor
+VARIABLE command_port 8080
+VARIABLE my_api_key # get value from comsos secrets
 
-TARGET FAKESAT <%= fakesat_target_name %>
-  LOG_RETAIN_TIME 360000 # 10 hrs
-  REDUCED_LOG_RETAIN_TIME 360000 # 10hrs
-  TLM_LOG_CYCLE_TIME 300
+TARGET FAKESAT FAKESAT
 
-INTERFACE <%= fakesat_int_name %> fakesat_http_interface.rb <%= fakesat_command_host %> <%= fakesat_command_port %> <%= fakesat_command_protocol %> <%= fakesat_write_timeout %> <%= fakesat_read_timeout %> <%= fakesat_connect_timeout %> <%= fakesat_include_request_in_response %> <%= fakesat_command_path %>
-  MAP_TARGET <%= fakesat_target_name %>
+# Use our new wrapper. No changes needed to FAKESAT's cmd.txt!
+INTERFACE FAKESAT_INT http_client_interface.rb <%= command_host %> <%= command_port %> HTTP 5.0 5.0 5.0
+  MAP_TARGET FAKESAT
+  OPTION HTTP_PATH /api/commands
+  OPTION HTTP_METHOD POST
+  OPTION HTTP_HEADER "X-API-Key: <%= my_api_key %>"
